@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import "./../photo.css";
-import Footer from "./Footer";
-import { Form, Button, Row, Col } from "react-bootstrap";
+//import Footer from "./Footer";
+import { Form, Button, Col } from "react-bootstrap";
 import firebase from "./../firebase"
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function farmerData() {
@@ -72,6 +73,7 @@ export default function farmerData() {
  
   };
   return (
+    <Form noValidate validated={validated}>
     <div className="container-fluid ">
       
     <div
@@ -123,7 +125,7 @@ export default function farmerData() {
                 type="text"
                 placeholder="กรุณากรอกรหัสผ่าน"
                 onChange={(e) => {
-                    setAccount({ ...account, user: e.target.value });
+                    setAccount({ ...account, pass: e.target.value });
                   }}
             />
           </Col>
@@ -154,7 +156,7 @@ export default function farmerData() {
               type="text"
               placeholder="กรุณากรอกชื่อ" />
               onChange={(e) => {
-                setAccount({ ...account, user: e.target.value });
+                setAccount({ ...account, fname: e.target.value });
               }}
           </Col>
         </Form.Row>
@@ -168,7 +170,7 @@ export default function farmerData() {
               type="text"
               placeholder="กรุณากรอกนามสกุล"
               onChange={(e) => {
-                setAccount({ ...account, user: e.target.value });
+                setAccount({ ...account, lname: e.target.value });
               }}
             />
           </Col>
@@ -178,7 +180,12 @@ export default function farmerData() {
             เพศ
           </Form.Label>
           <Col>
-            <Form.Control as="select" size="text">
+            <Form.Control 
+            as="select" 
+            value={account.gender}
+            onChange={(e) => {
+              setAccount({ ...account, gender: e.target.value });
+            }}>
               <option>กรุณาเลือกเพศ..</option>
               <option>ชาย</option>
               <option>หญิง</option>
@@ -192,7 +199,14 @@ export default function farmerData() {
             เลขบัตรประชาชน
           </Form.Label>
           <Col>
-            <Form.Control size="text" type="text" placeholder="กรุณากรอกเลขบัตรประชาชน" />
+            <Form.Control 
+            required
+            type="text"
+            placeholder="เลขบัตร 13 หลัก"
+            value={account.id_card}
+            onChange={(e) => {
+              setAccount({ ...account, id_card: e.target.value });
+            }} />
           </Col>
         </Form.Row>
         <Form.Row>
@@ -200,7 +214,14 @@ export default function farmerData() {
             เบอร์โทรศัพท์
           </Form.Label>
           <Col>
-            <Form.Control size="text" type="text" placeholder="กรุณากรอกเบอร์โทรศัพท์" />
+            <Form.Control 
+            required
+            type="text"
+            placeholder="เบอร์โทรศัพท์"
+            value={account.phone_num}
+            onChange={(e) => {
+              setAccount({ ...account, phone_num: e.target.value });
+            }} />
           </Col>
         </Form.Row>
 
@@ -209,7 +230,14 @@ export default function farmerData() {
             ที่อยู่
           </Form.Label>
           <Col>
-            <Form.Control size="text" type="text" placeholder="" />
+            <Form.Control 
+            required
+            type="text"
+            placeholder="บ้านเลขที่ หมู่"
+            value={account.address}
+            onChange={(e) => {
+              setAccount({ ...account, address: e.target.value });
+            }}/>
           </Col>
         <Form.Label columm="sm" lg={2} style={{fontSize:"20px"}}>
             จังหวัด
@@ -265,12 +293,15 @@ export default function farmerData() {
 
       <p></p>
 
-      <Button type="submit" className="btn btn-blue space">
+      <Button type="submit" className="btn btn-blue space" onClick={(event) => handleSubmit(event)}>
         สมัครสมาชิก
       </Button>
+
+      <Link to="/login">
       <Button type="cancel" className="btn btn-danger">
         ยกเลิก
       </Button>
+      </Link>
       <p></p>
       <div class="container signin">
         <p>
@@ -280,5 +311,6 @@ export default function farmerData() {
     </div> 
     </div>    
   </div>
+  </Form>
   )
 }
